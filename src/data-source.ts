@@ -9,7 +9,8 @@ export const AppDataSource = new DataSource({
   password: "",
   database: "graphql-ts-server-boilerplate",
   synchronize: true,
-  logging: false,
+  logging: true,
+  entities: ["src/entity/**/*.ts"],
   migrations: ["src/migration/**/*.ts"],
   subscribers: ["src/subscriber/**/*.ts"],
 });
