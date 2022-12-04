@@ -6,15 +6,16 @@ import { resolvers } from "./resolvers";
 import { AppDataSource } from "./data-source";
 import path = require("node:path");
 
-const schemaPath = path.join(__dirname, "schema.graphql");
-const typeDefs = readFileSync(schemaPath, "utf-8");
-const yoga = createYoga({ schema: createSchema({ typeDefs, resolvers }) });
-const server = createServer(yoga);
+export const startServer = async () => {
+  const schemaPath = path.join(__dirname, "schema.graphql");
+  const typeDefs = readFileSync(schemaPath, "utf-8");
+  const yoga = createYoga({ schema: createSchema({ typeDefs, resolvers }) });
+  const server = createServer(yoga);
 
-AppDataSource.initialize()
-  .then(() => {
-    server.listen(4000, () => {
-      console.info("Server is running on http://localhost:4000/graphql");
-    });
-  })
-  .catch((error) => console.log(error));
+  await AppDataSource.initialize();
+  server.listen(4000, () => {
+    console.info("Server is running on http://localhost:4000/graphql");
+  });
+};
+
+startServer();
