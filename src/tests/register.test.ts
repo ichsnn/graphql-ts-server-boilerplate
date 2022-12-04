@@ -1,7 +1,11 @@
 import { request } from "graphql-request";
 import { User } from "../entity/User";
-import { AppDataSource } from "../data-source";
+import { AppDataSource } from "../services/data-source";
 import { host } from "./constants";
+
+beforeAll(async () => {
+  await AppDataSource.initialize();
+})
 
 const email = "bob3@bob.com";
 const password = "paswrasra";
@@ -15,7 +19,6 @@ mutation {
 test("Register user", async () => {
   const response = await request(host, mutation);
   expect(response).toEqual({ register: true });
-  await AppDataSource.initialize();
   const users = await User.find({ where: { email } });
   expect(users).toHaveLength(1);
   const user = users[0];

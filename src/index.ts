@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { createSchema, createYoga } from "graphql-yoga";
 import { resolvers } from "./resolvers";
-import { AppDataSource } from "./data-source";
+import { AppDataSource } from "./services/data-source";
 import path = require("node:path");
 
 export const startServer = async () => {

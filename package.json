@@ -1,52 +1,53 @@
 {
-   "name": "graphql-ts-server-boilerplate",
-   "version": "0.0.1",
-   "description": "Awesome project developed with TypeORM.",
-   "type": "commonjs",
-   "devDependencies": {
-      "@graphql-codegen/cli": "^2.15.0",
-      "@graphql-codegen/typescript": "^2.8.2",
-      "@graphql-codegen/typescript-resolvers": "^2.7.7",
-      "@types/bcrypt": "^5.0.0",
-      "@types/jest": "^29.2.3",
-      "@types/node": "^18.11.9",
-      "@types/uuid": "^9.0.0",
-      "jest": "^29.3.1",
-      "ts-jest": "^29.0.3",
-      "ts-node": "10.9.1",
-      "tslint": "^6.1.3",
-      "tslint-config-prettier": "^1.18.0",
-      "typescript": "4.9.3"
-   },
-   "dependencies": {
-      "bcrypt": "^5.1.0",
-      "graphql": "^16.6.0",
-      "graphql-modules": "^2.1.0",
-      "graphql-request": "^5.0.0",
-      "graphql-yoga": "3.1.0",
-      "mysql2": "^2.3.3",
-      "reflect-metadata": "^0.1.13",
-      "typeorm": "0.3.10",
-      "uuid": "^9.0.0"
-   },
-   "scripts": {
-      "start": "nodemon --exec ts-node src/index.ts",
-      "typeorm": "typeorm-ts-node-commonjs",
-      "generate": "graphql-codegen",
-      "test": "jest"
-   },
-   "jest": {
-      "moduleFileExtensions": [
-         "ts",
-         "tsx",
-         "js",
-         "jsx",
-         "json",
-         "node"
-      ],
-      "transform": {
-         "^.+\\.(ts|tsx)$": "ts-jest"
-      },
-      "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|tsx|js)$"
-   }
+  "name": "graphql-ts-server-boilerplate",
+  "version": "0.0.1",
+  "description": "Awesome project developed with TypeORM.",
+  "type": "commonjs",
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.15.0",
+    "@graphql-codegen/typescript": "^2.8.2",
+    "@graphql-codegen/typescript-resolvers": "^2.7.7",
+    "@types/bcrypt": "^5.0.0",
+    "@types/jest": "^29.2.3",
+    "@types/node": "^18.11.9",
+    "@types/uuid": "^9.0.0",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "10.9.1",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "4.9.3"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "graphql": "^16.6.0",
+    "graphql-modules": "^2.1.0",
+    "graphql-request": "^5.0.0",
+    "graphql-yoga": "3.1.0",
+    "mysql2": "^2.3.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "0.3.10",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "start": "SET NODE_ENV=development && nodemon --exec ts-node src/index.ts",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "generate": "graphql-codegen",
+    "test": "SET NODE_ENV=test && jest",
+    "test-server": "SET NODE_ENV=test && ts-node src/index.ts"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|tsx|js)$"
+  }
 }
