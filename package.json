@@ -34,7 +34,6 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "generate": "graphql-codegen",
     "test": "SET NODE_ENV=test && jest",
-    "test-server": "SET NODE_ENV=test && ts-node src/index.ts"
   },
   "jest": {
     "moduleFileExtensions": [

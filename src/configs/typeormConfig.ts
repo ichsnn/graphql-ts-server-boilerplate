@@ -35,7 +35,7 @@ const typeOrmConfig: ITypeOrmConfig = {
     password: "",
     database: "graphql-ts-server-boilerplate-test",
     synchronize: true,
-    logging: false,
+    logging: true,
     dropSchema: true,
     entities: ["src/entity/**/*.ts"],
     migrations: ["src/migration/**/*.ts"],
