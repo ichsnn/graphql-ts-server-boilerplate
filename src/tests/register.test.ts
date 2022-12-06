@@ -4,11 +4,16 @@ import { User } from "../entity/User";
 import { startServer } from "../services/server";
 
 let getHost = () => "";
+let app : any
 
 beforeAll(async () => {
-  const app = await startServer();
+  app = await startServer();
   const {port} = app.address() as {address: string, port: number, family: string};
   getHost = () => `http://127.0.0.1:${port}/graphql`;
+})
+
+afterAll(async () => {
+  app.close();
 })
 
 const email = "bob4@bob.com";
@@ -21,7 +26,6 @@ mutation {
 `;
 
 test("Register user", async () => {
-  console.log(getHost())
   const response = await request(getHost(), mutation);
   expect(response).toEqual({ register: true });
   const users = await User.find({ where: { email } });

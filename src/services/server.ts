@@ -27,5 +27,8 @@ export const startServer = async () => {
       console.info("Server is running on http://localhost:4000/graphql");
     }
   );
+  app.on("close", () => {
+    AppDataSource.destroy();
+  })
   return app;
 };
