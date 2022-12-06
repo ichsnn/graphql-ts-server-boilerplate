@@ -12,6 +12,10 @@ export const startServer = async () => {
   const resolverFiles = loadFilesSync(
     path.join(__dirname, "../modules/**/resolvers.ts")
   );
+  const sharedTypeDefs = loadFilesSync(
+    path.join(__dirname, "../shared.graphql")
+  );
+  typeDefFiles.push(...sharedTypeDefs);
 
   const typeDefs = mergeTypeDefs(typeDefFiles);
   const resolvers = mergeResolvers(resolverFiles);
@@ -29,6 +33,6 @@ export const startServer = async () => {
   );
   app.on("close", () => {
     AppDataSource.destroy();
-  })
+  });
   return app;
 };
