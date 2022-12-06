@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 import { createSchema, createYoga } from "graphql-yoga";
 import { loadFilesSync } from "@graphql-tools/load-files";
 import { mergeResolvers, mergeTypeDefs } from "@graphql-tools/merge";
-import { AppDataSource } from "../services/data-source";
+import { AppDataSource } from "./data-source";
 import * as path from "path";
 
 export const startServer = async () => {
