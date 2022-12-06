@@ -1,4 +1,4 @@
-import { ITypeOrmConfig } from "./types";
+import { ITypeOrmConfig } from "../types";
 
 const typeOrmConfig: ITypeOrmConfig = {
   production: {
@@ -35,7 +35,7 @@ const typeOrmConfig: ITypeOrmConfig = {
     password: "",
     database: "graphql-ts-server-boilerplate-test",
     synchronize: true,
-    logging: true,
+    logging: false,
     dropSchema: true,
     entities: ["src/entity/**/*.ts"],
     migrations: ["src/migration/**/*.ts"],

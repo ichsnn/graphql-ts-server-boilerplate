@@ -1,11 +1,8 @@
 import * as bcrypt from "bcrypt";
-import { User } from "./entity/User";
-import { Resolvers } from "./types/schema";
+import { User } from "../../entity/User";
+import { RegisterModule } from "./types";
 
-export const resolvers: Resolvers = {
-  Query: {
-    hello: (_: any, { name }) => `Hello ${name || "World"}`,
-  },
+export const resolvers: RegisterModule.Resolvers = {
   Mutation: {
     register: async (_: any, { email, password }) => {
       const hashedPassword = await bcrypt.hash(password, 10);

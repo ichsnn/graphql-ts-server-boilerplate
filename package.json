@@ -5,8 +5,9 @@
   "type": "commonjs",
   "devDependencies": {
     "@graphql-codegen/cli": "^2.15.0",
-    "@graphql-codegen/typescript": "^2.8.2",
-    "@graphql-codegen/typescript-resolvers": "^2.7.7",
+    "@graphql-codegen/graphql-modules-preset": "^2.5.7",
+    "@graphql-codegen/typescript": "^2.8.3",
+    "@graphql-codegen/typescript-resolvers": "^2.7.8",
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.9",
@@ -19,10 +20,12 @@
     "typescript": "4.9.3"
   },
   "dependencies": {
+    "@graphql-tools/load-files": "^6.6.1",
     "bcrypt": "^5.1.0",
     "graphql": "^16.6.0",
     "graphql-modules": "^2.1.0",
     "graphql-request": "^5.0.0",
+    "graphql-tools": "^8.3.12",
     "graphql-yoga": "3.1.0",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",

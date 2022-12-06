@@ -1,14 +1,23 @@
-import { readFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { createSchema, createYoga } from "graphql-yoga";
-import { resolvers } from "../resolvers";
+import { loadFilesSync } from "@graphql-tools/load-files";
+import { mergeResolvers, mergeTypeDefs } from "@graphql-tools/merge";
 import { AppDataSource } from "../services/data-source";
-import path = require("node:path");
+import * as path from "path";
 
 export const startServer = async () => {
-  const schemaPath = path.join(__dirname, "../schema.graphql");
-  const typeDefs = readFileSync(schemaPath, "utf-8");
-  const yoga = createYoga({ schema: createSchema({ typeDefs, resolvers }) });
+  const typeDefFiles = loadFilesSync(
+    path.join(__dirname, "../modules/**/schema.graphql")
+  );
+  const resolverFiles = loadFilesSync(
+    path.join(__dirname, "../modules/**/resolvers.ts")
+  );
+
+  const typeDefs = mergeTypeDefs(typeDefFiles);
+  const resolvers = mergeResolvers(resolverFiles);
+  const schema = createSchema({ typeDefs, resolvers });
+
+  const yoga = createYoga({ schema });
   const server = createServer(yoga);
 
   await AppDataSource.initialize();
