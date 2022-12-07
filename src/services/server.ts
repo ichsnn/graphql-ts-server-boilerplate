@@ -44,16 +44,17 @@ export const startServer = async () => {
   const app = express();
   app.use("/graphql", yoga);
   app.get("/confirmation/:id", async (req, res) => {
-    const confirmation_id = req.params.id;
-    const userId = await redis.get(confirmation_id);
+    const key_id = req.params.id;
+    const userId = await redis.get(key_id);
     if (userId) {
       await User.update({ id: userId! }, { confirmed: true });
+      await redis.del(key_id);
       res.send("ok");
     } else {
-      res.status(404).send("invalid");
+      res.send("invalid");
     }
   });
-  
+
   // Initialize Data Source
   await AppDataSource.initialize();
   const listener = app.listen(
