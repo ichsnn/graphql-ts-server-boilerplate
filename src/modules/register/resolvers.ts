@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { User } from "../../entity/User";
 import { createConfirmEmailURL } from "../../utils/createConfirmEmailURL";
 import { formatYupError } from "../../utils/formatYupError";
+import { sendEmail } from "../../utils/sendEmail";
 import {
   errorDuplicateEmail,
   errorEmailNotLongEnough,
@@ -51,7 +52,8 @@ export const resolvers: RegisterModule.Resolvers = {
       });
       await user.save();
 
-      await createConfirmEmailURL(url, user.id, redis);
+      const link = await createConfirmEmailURL(url, user.id, redis);
+      sendEmail(email, link);
 
       return null;
     },
