@@ -10,20 +10,16 @@ import {
 } from "./errorMessages";
 
 let getHost = () => "";
-let app: any;
+let listener: any;
 
 beforeAll(async () => {
-  app = await startServer();
-  const { port } = app.address() as {
-    address: string;
-    port: number;
-    family: string;
-  };
+  listener = await startServer();
+  const port = listener.address().port;
   getHost = () => `http://127.0.0.1:${port}/graphql`;
 });
 
 afterAll(async () => {
-  app.close();
+  listener.close();
 });
 
 const email = "user@mail.com";

@@ -1,6 +1,7 @@
 import * as bcrypt from "bcrypt";
 import * as yup from "yup";
 import { User } from "../../entity/User";
+import { createConfirmEmailURL } from "../../utils/createConfirmEmailURL";
 import { formatYupError } from "../../utils/formatYupError";
 import {
   errorDuplicateEmail,
@@ -21,7 +22,7 @@ const schema = yup.object().shape({
 
 export const resolvers: RegisterModule.Resolvers = {
   Mutation: {
-    register: async (_: any, args) => {
+    register: async (_: any, args, {redis, url}) => {
       try {
         await schema.validate(args, { abortEarly: false });
       } catch (err) {
@@ -49,6 +50,10 @@ export const resolvers: RegisterModule.Resolvers = {
         password: hashedPassword,
       });
       await user.save();
+
+      const link = await createConfirmEmailURL(url, user.id, redis)
+      console.log(link)
+
       return null;
     },
   },
