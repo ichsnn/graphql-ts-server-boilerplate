@@ -43,7 +43,7 @@
   "scripts": {
     "start": "SET NODE_ENV=development && nodemon --exec ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "generate": "graphql-codegen",
+    "generate": "graphql-codegen --config ./src/scripts/codegen.ts",
     "test": "SET NODE_ENV=test && jest --detectOpenHandles --forceExit"
   },
   "jest": {

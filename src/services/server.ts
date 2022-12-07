@@ -1,36 +1,13 @@
 import * as express from "express";
-import { createSchema, createYoga } from "graphql-yoga";
-import Redis from "ioredis";
-import { loadFilesSync } from "@graphql-tools/load-files";
-import { mergeResolvers, mergeTypeDefs } from "@graphql-tools/merge";
+import { createYoga } from "graphql-yoga";
 import { AppDataSource } from "./data-source";
-import * as path from "path";
-import { User } from "../entity/User";
+import { redis } from "./redis";
+import routes from "../routes";
+import { generateSchema } from "../utils";
 
 export const startServer = async () => {
-  // TypeDefs
-  const typeDefFiles = loadFilesSync(
-    path.join(__dirname, "../modules/**/schema.graphql")
-  );
-  const sharedTypeDefs = loadFilesSync(
-    path.join(__dirname, "../shared.graphql")
-  );
-  typeDefFiles.push(...sharedTypeDefs);
-  const typeDefs = mergeTypeDefs(typeDefFiles);
-
-  // Resolvers
-  const resolverFiles = loadFilesSync(
-    path.join(__dirname, "../modules/**/resolvers.ts")
-  );
-  const resolvers = mergeResolvers(resolverFiles);
-
-  // Schema
-  const schema = createSchema({ typeDefs, resolvers });
-
-  // Redis
-  const redis = new Redis();
-
   // GraphQL Yoga
+  const schema = generateSchema();
   const yoga = createYoga({
     schema: (_) => schema,
     context: ({ request }) => {
@@ -43,17 +20,7 @@ export const startServer = async () => {
   // Express Server
   const app = express();
   app.use("/graphql", yoga);
-  app.get("/confirmation/:id", async (req, res) => {
-    const key_id = req.params.id;
-    const userId = await redis.get(key_id);
-    if (userId) {
-      await User.update({ id: userId! }, { confirmed: true });
-      await redis.del(key_id);
-      res.send("ok");
-    } else {
-      res.send("invalid");
-    }
-  });
+  app.use(routes);
 
   // Initialize Data Source
   await AppDataSource.initialize();
