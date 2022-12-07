@@ -22,7 +22,7 @@ const schema = yup.object().shape({
 
 export const resolvers: RegisterModule.Resolvers = {
   Mutation: {
-    register: async (_: any, args, {redis, url}) => {
+    register: async (_, args, { redis, url }) => {
       try {
         await schema.validate(args, { abortEarly: false });
       } catch (err) {
@@ -30,7 +30,7 @@ export const resolvers: RegisterModule.Resolvers = {
       }
       const { email, password } = args;
 
-      const userExists = await User.findOne({
+      const userExists: User | null = await User.findOne({
         where: { email },
         select: ["id"],
       });
@@ -51,8 +51,7 @@ export const resolvers: RegisterModule.Resolvers = {
       });
       await user.save();
 
-      const link = await createConfirmEmailURL(url, user.id, redis)
-      console.log(link)
+      await createConfirmEmailURL(url, user.id, redis);
 
       return null;
     },
