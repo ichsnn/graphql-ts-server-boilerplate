@@ -1,0 +1,2 @@
+# .graphqlrc.yml
+schema: './src/modules/**/schema.graphql'

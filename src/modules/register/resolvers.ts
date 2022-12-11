@@ -1,9 +1,7 @@
 import * as bcrypt from "bcrypt";
 import * as yup from "yup";
 import { User } from "../../entity/User";
-import { createConfirmEmailURL } from "../../utils/createConfirmEmailURL";
 import { formatYupError } from "../../utils/formatYupError";
-import { sendEmail } from "../../utils/sendEmail";
 import {
   errorDuplicateEmail,
   errorEmailNotLongEnough,
@@ -11,6 +9,9 @@ import {
   errorPasswordNotLongEnough,
 } from "./errorMessages";
 import { RegisterModule } from "./types";
+
+// import { createConfirmEmailURL } from "../../utils/createConfirmEmailURL";
+// import { sendEmail } from "../../utils/sendEmail";
 
 const schema = yup.object().shape({
   email: yup
@@ -23,7 +24,11 @@ const schema = yup.object().shape({
 
 export const resolvers: RegisterModule.Resolvers = {
   Mutation: {
-    register: async (_, args, { redis, url }) => {
+    register: async (
+      _,
+      args
+      // { redis, url }
+    ) => {
       try {
         await schema.validate(args, { abortEarly: false });
       } catch (err) {
@@ -52,8 +57,8 @@ export const resolvers: RegisterModule.Resolvers = {
       });
       await user.save();
 
-      const link = await createConfirmEmailURL(url, user.id, redis);
-      sendEmail(email, link);
+      // const link = await createConfirmEmailURL(url, user.id, redis);
+      // sendEmail(email, link);
 
       return null;
     },
