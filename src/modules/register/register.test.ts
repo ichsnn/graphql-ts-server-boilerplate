@@ -1,4 +1,5 @@
 import { request } from "graphql-request";
+import { DataSource } from "typeorm";
 
 import { User } from "../../entity/User";
 import { AppDataSource } from "../../services/data-source";
@@ -21,18 +22,20 @@ mutation {
 }
 `;
 
+let conn: DataSource;
+
 beforeAll(async () => {
-  await AppDataSource.initialize();
+  conn = await AppDataSource.initialize();
 });
 
 afterAll(async () => {
-  await AppDataSource.destroy();
+  await conn.destroy();
 });
 
 describe("Register user", () => {
   // set host
   let host = `${process.env.TEST_HOST}/graphql` as string;
-  
+
   it("Check for duplicate email", async () => {
     // make sure we can register user
     const response1 = await request(host, mutation(email, password));

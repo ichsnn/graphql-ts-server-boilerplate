@@ -1,4 +1,5 @@
 import { request } from "graphql-request";
+import { DataSource } from "typeorm";
 import { User } from "../../entity/User";
 import { AppDataSource, redis } from "../../services";
 import { Error } from "../../types";
@@ -26,13 +27,15 @@ mutation {
 }
 `;
 
+let conn: DataSource;
+
 beforeAll(async () => {
-  await AppDataSource.initialize();
+  conn = await AppDataSource.initialize();
 });
 
 afterAll(async () => {
   redis.quit();
-  await AppDataSource.destroy();
+  await conn.destroy();
 });
 
 describe("Login", () => {

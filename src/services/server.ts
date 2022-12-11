@@ -14,12 +14,17 @@ const SESSION_SECRET = "graphql-ts-server-boilerplate-secret";
 export const startServer = async () => {
   // GraphQL Yoga
   const schema = generateSchema();
+
   const yoga = createYoga({
     schema: (_) => schema,
-    context: ({request}) => {
+    context: ({ request }) => {
       const protocol = request.url.split(":")[0];
       const host = request.headers.get("host");
-      return { redis, url: `${protocol}://${host}`, body: request.body};
+      return { redis, url: `${protocol}://${host}` };
+    },
+    cors: {
+      credentials: true,
+      origin: "http://127.0.0.1:5500",
     },
   });
 
@@ -27,12 +32,12 @@ export const startServer = async () => {
 
   // Express Server
   const app = express();
-  app.use(
-    cors({
-      credentials: true,
-      origin: "http://localhost:3000",
-    })
-  );
+  const corsConfig: cors.CorsOptions = {
+    credentials: true,
+    origin: "http://127.0.0.1:5500",
+  };
+  app.use(cors(corsConfig));
+  app.options("*", cors(corsConfig));
   app.set("trust proxy", 1); // trust first proxy
   app.use(
     session({
@@ -40,7 +45,7 @@ export const startServer = async () => {
       store: new RedisStore({ client: redis as any }),
       secret: SESSION_SECRET,
       resave: false,
-      saveUninitialized: false,
+      saveUninitialized: true,
       cookie: {
         httpOnly: true,
         secure: false,
@@ -48,7 +53,13 @@ export const startServer = async () => {
       },
     })
   );
+  app.use("/graphql", (req, __, next) => {
+    console.log(req.session);
+    next();
+  });
+
   app.use("/graphql", yoga);
+
   app.use(routes);
 
   // Initialize Data Source

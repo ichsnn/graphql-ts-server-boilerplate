@@ -1,4 +1,5 @@
 import * as bcrypt from "bcrypt";
+import { Redis } from "ioredis";
 
 import { User } from "../../entity/User";
 import { createErrorResponse } from "../../utils/createErrorResponse";
@@ -10,7 +11,7 @@ export const resolvers: LoginModule.Resolvers = {
     bye2: () => "bye",
   },
   Mutation: {
-    login: async (_, { email, password }, { body }) =>
+    login: async (_, { email, password }, { redis } : {redis : Redis}) =>
       // { redis, url }
       {
         const user = await User.findOne({ where: { email } });
@@ -28,8 +29,8 @@ export const resolvers: LoginModule.Resolvers = {
           return [createErrorResponse("password", invalidLoginError)];
         }
 
-        // login successful
-        body.session.userId = user.id;
+        // redis session
+        await redis.set(`session${user.id}`, user.id, "EX", 60 * 60 * 24); // 1 day
 
         return null;
       },

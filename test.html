@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const registerTest = `
+      mutation {
+        register(email: "user@mail.com", password: "password") {
+          path
+          message
+        }
+      }
+    `
+    const loginTest = `
+      mutation {
+        login(email: "user@mail.com", password: "password") {
+          path
+          message
+        }
+      }
+    `
+
+    const meQuery = `
+      query {
+        me {
+          id
+          email
+        }
+      }
+    `;
+
+    const testFetch = async () => {
+      // use axios and set server session cookie
+      const registerResponse = await axios.post('http://localhost:4000/graphql', {
+        query: registerTest
+      }, {
+        withCredentials: true
+      })
+      const loginResponse = await axios.post('http://localhost:4000/graphql', {
+        query: loginTest,
+      }, {
+        withCredentials: true
+      })
+      const meResponse = await axios.post('http://localhost:4000/graphql', {
+        query: meQuery,
+      }, {
+        withCredentials: true
+      })
+      console.log(registerResponse.data.data)
+      console.log(loginResponse.data.data)
+      console.log(meResponse.data.data)
+    }
+
+    testFetch()
+  </script>
+</body>
+
+</html>
